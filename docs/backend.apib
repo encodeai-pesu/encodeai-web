@@ -1,0 +1,127 @@
+FORMAT: 1A
+
+# Encode AI API
+This is the official documentation for the Encode AI API.
+
+# Group Authentication
+All authentication endpoints are documented here.
+
+
+## Create an account [POST /auth/signup]
+Create an account using the data provided
+
++ Request (application/json)
+    + Body
+
+            {
+                "username": "user",
+                "name": "Name",
+                "password": "password"
+            }
+
+    + Schema
+
+            {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            }
+
++ Response 200
+    + Body
+
+            { "message": "User created successfully!!" }
+
++ Response 500
+    + Body
+
+            { "error": "Internal server error: [error]" }
+
+
+
+## Login [POST /auth/login]
+Login to your account
+
++ Request (application/json)
+    + Body
+
+            {
+                "username": "user",
+                "password": "password"
+            }
+
+    + Schema
+
+            {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            }
+
++ Response 200
+    + Body
+
+            { "message": "Signed in as user" }
+
++ Response 401
+    + Body
+
+            { "error": "Wrong password" }
+
++ Response 500
+    + Body
+
+            { "error": "Internal server error: [error]" }
+
+
+## Get protected dummy content [GET /auth/protected]
+Dummy endpoint to test if login was successful
+
++ Response 200
+    + Body
+
+            { "message": "user is in!" }
+
++ Response 401
+    If not signed in
+    + Body
+
+            { "error": "Unauthorized" }
+
+
+## Get session data [GET /auth/session]
+Get logged in user's data if signed in, or `null` if not
++ Response 200
+    - Sent when signed in
+    + Body
+
+            {
+                "user": {
+                    "id": "[user id]",
+                    "username": "user",
+                    "name": "Name",
+                }
+            }
+
++ Response 202
+    - Sent when not signed in
+    + Body
+
+            {
+                "user": null
+            }
